@@ -595,7 +595,10 @@ function loadInterface() {
 	layerBoundaries = L.geoJson(boundaries);
 	for (let key in layerBoundaries._layers) {
 		let item = layerBoundaries._layers[key]
-		nodes[item.feature.properties.bairro_nome].boundary = item;
+		for (let key2 in nodes){
+			if(nodes[key2].bairro_codigo == item.feature.properties.bairro_codigo)
+				nodes[key2].boundary = item;
+		}
 	}
 	if (!bairrosMode) {
 		//municipios
