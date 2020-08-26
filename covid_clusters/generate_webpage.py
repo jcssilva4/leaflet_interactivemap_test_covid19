@@ -16,8 +16,8 @@ def write_json_graph(filepath, const_data, activeCases_dist, start_date_, end_da
 	listNames = [name for name in const_data["Name"]]
 	cods =  [code for code in const_data["Code"]]
 	nVertices = len(listNames)
-	x = [lon for lon in const_data["long"]]
-	y = [lat for lat in const_data["lat"]]
+	y = [lon for lon in const_data["long"]]
+	x = [lat for lat in const_data["lat"]]
 	population_2019 = [pop for pop in const_data["population_2019"]]
 
 	# OD matrices
@@ -94,7 +94,7 @@ def write_json_graph(filepath, const_data, activeCases_dist, start_date_, end_da
 		# add all OD_matrices
 		wij = dict([])
 		for dest in range(nVertices): # loop over all origins
-			wij["w_to_" + str(listNames[dest])] = ODmat.iloc[assoc_idxs[i],assoc_idxs[dest]]# set weights associated with each edge
+			wij["w_to_" + str(listNames[dest])] = ODmat.iloc[assoc_idxs[i],assoc_idxs[dest]+1]# set weights associated with each edge
 		temp_dict['edge_weights'] = wij
 
 		# append to datacovid
