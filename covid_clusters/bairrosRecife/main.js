@@ -583,7 +583,7 @@ function loadInterface() {
 
 
     //////// MAP
-    map = L.map('map').setView([-8.07792545411762, -34.89995956420899], 12);
+    map = L.map('map').setView([-8.043932398924108, -34.89995956420899], 12);
 
     var Stadia_AlidadeSmooth = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
 	maxZoom: 20,
@@ -900,6 +900,7 @@ function buildCoords() {
     for (let i = 0; i < graph[0].active_cases.length; ++i) {
 	dates.push(graph[0].active_cases[i][0]);
     }
+    dates = dates.reverse();
     currentDate = dates[0];
 
     d3.select("#dateSelect")
