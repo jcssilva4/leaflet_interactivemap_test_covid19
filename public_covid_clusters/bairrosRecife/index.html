@@ -9,7 +9,7 @@
         <style>
                 #map {
                         width: 100%;
-                        height: 90%;
+                        height: 95%;
                 }
 
                 body {
@@ -17,7 +17,10 @@
                 }
 
                 #main {
-                        min-height: 800px;
+                    height:100vh;
+		    width:100vw;
+			min-width: 800px;
+			min-height: 800px;
                         margin: 0px;
                         padding: 0px;
                         display: -webkit-flex;
@@ -48,28 +51,30 @@
                         -webkit-order: 1;
                         order: 1;
                 }
+
                 #main>aside {
-                        margin: 0px;
-                        padding: 0px;
-                        border: 0px solid #8888bb;
-                        border-radius: 0pt;
+                        margin: 4px;
+                        padding: 5px;
+                        border: 1px solid #8888bb;
+                        border-radius: 7pt;
                         background: #ffffff;
-                        width: 0;
-                        height: 0;
-                        .visibility: hidden;
+                        -webkit-flex: 1 6 30%;
+                        flex: 1 6 30%;
+                        -webkit-order: 3;
+                        order: 3;
                 }
-                /*
+
                 header,
                 footer {
                         display: block;
                         margin: 4px;
                         padding: 5px;
-                        min-height: 50px;
+                        min-height: 20px;
                         border: 1px solid #000000;
                         font: 12px Helvetica;
                         background: #ffffff;
                 }
-                */
+
                 .info {
                         padding: 6px 8px;
                         font: 14px/16px Arial, Helvetica, sans-serif;
@@ -85,17 +90,21 @@
                 }
 
                 .legend {
-                        line-height: 30px;
+                        line-height: 18px;
                         color: #555;
                 }
 
                 .legend i {
-                        width: 30px;
+                        width: 18px;
                         height: 16px;
                         float: left;
                         margin-right: 8px;
                         opacity: 0.7;
                 }
+
+		label{
+		    font-size: 120%;
+		}
 
                 /* Too narrow to support three columns */
                 @media all and (max-width: 640px) {
@@ -144,13 +153,12 @@
                                         -->
                                         &nbsp;&nbsp;&nbsp;
 
-                                        <label for="colorByMenu">Colorir por:</label>
+                                        <label for="colorByMenu" style>Colorir por:</label>
                                         <select name="colorByMenu" id="colorSelect">
                                         </select>
-
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <label for="dateByMenu">Data selecionada:</label>
                                         <select name="dateByMenu" id="dateSelect"></select>
-                                        </br>
                                         <!--
                                         <label>
                                                 <input type="checkbox" id="singletonsCB" class="filled-in"
@@ -189,12 +197,6 @@
                         <div id="map"></div>
                 </article>
 
-                <aside>
-                        <div id="barchartDiv" class="two_one"></div>
-                        </br>
-                        </br>
-                        <div id="scatterDiv" class="two_two"></div>
-                </aside>
         </div>
         <script src="../lib/d3.v5.min.js"></script>
         <script src="../lib/turf.min.js"></script>

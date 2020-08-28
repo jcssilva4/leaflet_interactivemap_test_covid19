@@ -1,3 +1,4 @@
+
 //widgets
 let map = undefined;
 let barChart = undefined;
@@ -563,7 +564,7 @@ function loadInterface() {
 
 
     //////// MAP
-    map = L.map('map').setView([-8.07792545411762, -34.89995956420899], 12);
+    map = L.map('map').setView([ -8.035663219926592,-34.92038726806641], 12);
 
     var Stadia_AlidadeSmooth = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
 	maxZoom: 20,
@@ -602,7 +603,12 @@ function loadInterface() {
     //
     for (let n in nodes) {
 	let node = nodes[n];
-	node.boundary.on("click", function () { boundaryClicked(node.cluster) });
+	// node.boundary.on("click", function () {
+	//     boundaryClicked(node.cluster)
+	//     debugger
+	//     circle.bindPopup('Name: ' + node.name + '</br>' + 'Active Cases: ' + node.active_cases + '</br>' + 'Estimated Active Cases: ' + node.est_active_cases);
+	// });
+	node.boundary.bindPopup('Bairro: ' + node.name + '</br>' + 'Casos Ativos: ' + node.active_cases + '</br>' + 'Casos Estimados: ' + node.est_active_cases + '</br>'+ 'População: ' + node.population);
     }
 
     //legend
@@ -626,10 +632,10 @@ function loadInterface() {
     legend.addTo(map);
 
     //
-    loadBarChart();
+    //loadBarChart();
 
     //
-    loadScatterplot();
+    //loadScatterplot();
 
     //
     updateThreshold();
@@ -849,9 +855,9 @@ function updateThreshold() {
     //
     updateBoundaries();
     //
-    updateNodes();
+    //updateNodes();
     //
-    scatterplot.update();
+    //scatterplot.update();
 }
 
 function getProbInfection(node) {
@@ -868,7 +874,7 @@ function updateDate() {
 	circle.bindPopup('Nome: ' + node.name + '</br>' + 'Casos Ativos: ' + node.active_cases + '</br>' + 'Casos ativos estimados: ' + node.est_active_cases);
     }
     updateThreshold();
-    barChartOptionChanged(barChart.getSelectedOption());
+    //barChartOptionChanged(barChart.getSelectedOption());
 }
 
 
@@ -880,6 +886,7 @@ function buildCoords() {
     for (let i = 0; i < graph[0].active_cases.length; ++i) {
 	dates.push(graph[0].active_cases[i][0]);
     }
+    dates = dates.reverse();
     currentDate = dates[0];
 
     d3.select("#dateSelect")
