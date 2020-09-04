@@ -20,6 +20,7 @@ let dates = undefined;
 let currentDate = undefined;
 let casesByDate = {};
 let estimateCasesByDate = {};
+let foiByDate = {};
 //
 let option;
 let threshold = 0;
@@ -284,6 +285,9 @@ function getIndicator(node, indName) {
     if (indName == 'cases') {
 	return node.est_active_cases;
     }
+    if (indName == 'foi_node') {
+	return node.foi_node;
+    }
     else if (indName == 'casesPC') {
 	return node.est_active_cases / node.population;
     }
@@ -429,6 +433,25 @@ function updateBoundaries() {
 		    });
 		});
 	    }
+	    else if (option == 'foi_node') {
+		let domain = d3.extent(nodesList, d => d.foi_node);
+		scale.domain(domain);
+		clusters.forEach(cluster => {
+		    cluster.nodes.forEach(n => {
+			let node = nodes[n];
+			if (cluster.size > 1 || showSingletons) {
+			    let coeff = node.foi_node;
+			    let color = coeff == 0 ? 'white' : scale(coeff);
+			    node.boundary.options.fillColor = color;
+			    node.boundary.options.fillOpacity = 0.8;
+			    node.boundary.options.weight = 1;
+			    node.boundary.options.color = "gray";
+			    node.boundary.addTo(map);
+			    node.boundary.bringToBack()
+			}
+		    });
+		});
+	    }
 	    else {
 		let domain = d3.extent(nodesList, d => d[option]["mean"]);
 		scale.domain(domain);
@@ -517,8 +540,9 @@ function boundaryClicked(cluster) {
 
 function loadInterface() {
     //
-    let colorByOptions = [{ "value": "cases", "text": "Active Cases" },
-			  { "value": "casesPC", "text": "Active Cases Per Capita" },];
+    let colorByOptions = [{ "value": "cases", "text": "Casos ativos" },
+    		  { "value": "foi_node", "text": "Força da infecção" },
+			  { "value": "casesPC", "text": "Casos ativos per capita" },];
 
 
     d3.select("#colorSelect")
@@ -608,7 +632,7 @@ function loadInterface() {
 	//     debugger
 	//     circle.bindPopup('Name: ' + node.name + '</br>' + 'Active Cases: ' + node.active_cases + '</br>' + 'Estimated Active Cases: ' + node.est_active_cases);
 	// });
-	node.boundary.bindPopup('Bairro: ' + node.name + '</br>' + 'Casos Ativos: ' + node.active_cases + '</br>' + 'Casos Estimados: ' + node.est_active_cases + '</br>'+ 'População: ' + node.population);
+	node.boundary.bindPopup('Bairro: ' + node.name + '</br>' + 'Casos Ativos: ' + node.active_cases + '</br>' + 'Casos Estimados: ' + node.est_active_cases + '</br>'+ 'Força da infecção: ' + node.foi_node + '</br>'+ 'População: ' + node.population);
     }
 
     //legend
@@ -869,6 +893,7 @@ function updateDate() {
 	let node = nodes[name];
 	node["active_cases"] = casesByDate[name][currentDate];
 	node['est_active_cases'] = estimateCasesByDate[name][currentDate];
+	node['foi_node'] = foiByDate[name][currentDate];
 	//
 	let circle = nodeMarkers[name];
 	circle.bindPopup('Nome: ' + node.name + '</br>' + 'Casos Ativos: ' + node.active_cases + '</br>' + 'Casos ativos estimados: ' + node.est_active_cases);
@@ -934,6 +959,11 @@ function buildCoords() {
 	});
 	casesByDate[node.name] = cases;
 	estimateCasesByDate[node.name] = estCases;
+	let foi_singleton = {}
+	node.foi_sing.forEach(x => {
+	    foi_singleton[x[0]] = x[1];
+	});
+	foiByDate[node.name] = foi_singleton;
 
 	//
 	nodes[node.name] = {
@@ -948,6 +978,7 @@ function buildCoords() {
 	    "cluster": undefined,
 	    "active_cases": cases[currentDate],
 	    'est_active_cases': estCases[currentDate],
+	   	'foi_node': foi_singleton[currentDate],
 	    "sobre60": node["SOBRE"]["SOBRE60"],
 	    "rdpc": node["RDPC"].RDPC,
 	    "rdpct": node["RDPCT"],

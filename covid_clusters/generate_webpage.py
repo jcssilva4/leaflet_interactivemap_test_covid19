@@ -6,7 +6,7 @@ from tools import strip_accents
 import numpy as np
 
 
-def write_json_graph(filepath, const_data, activeCases_dist, start_date_, end_date):
+def write_json_graph(filepath, const_data, activeCases_dist, FOI_dist, start_date_, end_date):
 
 	# JSON filegeneration
 
@@ -45,15 +45,18 @@ def write_json_graph(filepath, const_data, activeCases_dist, start_date_, end_da
 		start_date = start_date_
 		line_activeCases = []
 		line_est_activeCases = []
+		line_FOI = []
 		while start_date < end_date:
 			#print(strip_accents(name).upper()+str(start_date))
 			value = 0
 			value = activeCases_dist[listNames[i]+str(start_date)]
 			line_activeCases.append([str(start_date) ,int(value)])
 			line_est_activeCases.append([str(start_date), int(value/0.2)])
+			line_FOI.append([str(start_date) ,float(FOI_dist[listNames[i]+str(start_date)])])
 			start_date += delta
 		temp_dict['active_cases'] = line_activeCases
 		temp_dict['est_active_cases'] = line_est_activeCases
+		temp_dict['foi_sing'] = line_FOI
 
 		# add socioeconomic features
 		'''
@@ -103,6 +106,8 @@ def write_json_graph(filepath, const_data, activeCases_dist, start_date_, end_da
 	# write the graph
 	datacovid = "let graph = " + str(datacovid)
 	filehandle = open(filepath, 'w')
+	filehandle.write(datacovid)
+	filehandle = open('public_' + filepath, 'w')
 	filehandle.write(datacovid)
 
 def get_additionalVariables(district_list):

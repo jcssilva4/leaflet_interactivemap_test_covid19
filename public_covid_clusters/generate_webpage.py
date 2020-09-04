@@ -104,6 +104,8 @@ def write_json_graph(filepath, const_data, activeCases_dist, start_date_, end_da
 	datacovid = "let graph = " + str(datacovid)
 	filehandle = open(filepath, 'w')
 	filehandle.write(datacovid)
+	filehandle = open('public'+filepath, 'w')
+	filehandle.write(datacovid)
 
 def get_additionalVariables(district_list):
 	# get variable dict for each district
