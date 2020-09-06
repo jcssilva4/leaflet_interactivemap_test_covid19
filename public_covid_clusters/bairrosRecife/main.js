@@ -894,9 +894,11 @@ function updateDate() {
 	node["active_cases"] = casesByDate[name][currentDate];
 	node['est_active_cases'] = estimateCasesByDate[name][currentDate];
 	node['foi_node'] = foiByDate[name][currentDate];
+	node.boundary.bindPopup('Bairro: ' + node.name + '</br>' + 'Casos Ativos: ' + node.active_cases + '</br>' + 'Casos Estimados: ' + node.est_active_cases + '</br>'+ 'Força da infecção: ' + node.foi_node + '</br>'+ 'População: ' + node.population);
 	//
 	let circle = nodeMarkers[name];
 	circle.bindPopup('Nome: ' + node.name + '</br>' + 'Casos Ativos: ' + node.active_cases + '</br>' + 'Casos ativos estimados: ' + node.est_active_cases);
+	
     }
     updateThreshold();
     //barChartOptionChanged(barChart.getSelectedOption());
